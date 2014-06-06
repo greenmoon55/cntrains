@@ -6,7 +6,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'cntrains.views.home', name='home'),
-    url(r'^lister/', include('lister.urls')),
+    url(r'^smsk/', include('lister.urls')),
 
     # url(r'^admin/', include(admin.site.urls)),
 )

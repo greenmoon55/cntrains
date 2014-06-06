@@ -1,7 +1,7 @@
 {% if version_list %}
   <ul>
     {% for version in version_list %}
-      <li>{{version.link}}</li>
+      <li><a href=/smsk/{{version.link}}>{{version.release_date}}</a></li>
     {% endfor %}
   </ul>
 {% else %}
