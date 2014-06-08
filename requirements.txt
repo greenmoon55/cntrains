@@ -1,0 +1,6 @@
+Django==1.6.5
+argparse==1.2.1
+django-kronos==0.4
+lxml==3.3.5
+requests==2.3.0
+wsgiref==0.1.2
