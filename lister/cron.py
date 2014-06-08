@@ -11,7 +11,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 from lister.models import Version
 
-@kronos.register('0 0 * * *')
+@kronos.register('* */1 * * *')
 def check_update():
     r = requests.get('http://www.smskb.com/soft/html/12.html')
     page = r.text
@@ -25,7 +25,7 @@ def check_update():
     try:
         record = Version.objects.get(release_date=date)
     except ObjectDoesNotExist:
-        with open(filename, 'wb') as fd:
+        with open('static/' + filename, 'wb') as fd:
             fd.write(r.content)
         m = hashlib.md5()
         m.update(r.content)
