@@ -10,4 +10,4 @@ class IndexView(generic.ListView):
     context_object_name = 'version_list'
 
     def get_queryset(self):
-        return Version.objects.order_by('-id')
+        return Version.objects.order_by('-release_date')
