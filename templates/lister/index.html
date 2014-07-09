@@ -1,5 +1,8 @@
-{% load staticfiles %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css'%}" />
+{% extends "base.html" %}
+
+{% block title %} 盛名时刻表历史版本 {% endblock %}
+
+{% block content %}
 {% if version_list %}
   <ul>
     {% for version in version_list %}
@@ -13,3 +16,4 @@
 {% else %}
   Not found.
 {% endif %}
+{% endblock %}
