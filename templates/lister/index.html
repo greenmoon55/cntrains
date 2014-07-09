@@ -1,9 +1,13 @@
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css'%}" />
 {% if version_list %}
   <ul>
     {% for version in version_list %}
-      <li><a href=/static/{{version.link}}>
-        {{version.release_date|date:"Y年n月j日"}}
-      </a></li>
+      <li>
+        <a href=/static/{{version.link}}>
+          {{version.release_date|date:"Y年n月j日"}}
+        </a>
+      </li>
     {% endfor %}
   </ul>
 {% else %}

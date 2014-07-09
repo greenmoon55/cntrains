@@ -13,3 +13,4 @@ parts
 media/uploads
 tmp
 db.sqlite3
+*.rar
