@@ -1,9 +1,11 @@
 {% if version_list %}
   <ul>
     {% for version in version_list %}
-      <li><a href=/static/{{version.link}}>{{version.release_date}}</a></li>
+      <li><a href=/static/{{version.link}}>
+        {{version.release_date|date:"Y年n月j日"}}
+      </a></li>
     {% endfor %}
   </ul>
 {% else %}
-  No found.
+  Not found.
 {% endif %}
