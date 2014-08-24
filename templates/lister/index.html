@@ -4,16 +4,28 @@
 
 {% block content %}
 {% if version_list %}
-  <ul>
+  <table class="table table-striped">
+    <thead>
+      <th>
+        文件名
+      </th>
+      <th>
+        上传时间
+      </th>
+    </thead>
+    <tbody>
     {% for version in version_list %}
-      <li>
-        <a href="http://cntrains.qiniu.com/{{version.key}}">
-          {{version.key}}
-        </a>
-        上传时间{{version.uploadTime|date:"Y年n月j日"}}
-      </li>
+      <tr>
+        <td>
+          <a href="http://cntrains.qiniu.com/{{version.key}}">
+            {{version.key}}
+          </a>
+        </td>
+        <td>{{version.uploadTime|date:"Y年n月j日"}}</td>
+      </tr>
     {% endfor %}
-  </ul>
+    </tbody>
+  </table>
 {% else %}
   Not found.
 {% endif %}
