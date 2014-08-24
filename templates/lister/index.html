@@ -7,9 +7,10 @@
   <ul>
     {% for version in version_list %}
       <li>
-        <a href=/static/{{version.link}}>
-          {{version.release_date|date:"Y年n月j日"}}
+        <a href="http://cntrains.qiniu.com/{{version.key}}">
+          {{version.key}}
         </a>
+        上传时间{{version.uploadTime|date:"Y年n月j日"}}
       </li>
     {% endfor %}
   </ul>

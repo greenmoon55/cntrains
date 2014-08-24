@@ -3,11 +3,16 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.views import generic
 
-from lister.models import Version
+import datetime
+import qn.qnutils
 
 class IndexView(generic.ListView):
     template_name = 'lister/index.html'
     context_object_name = 'version_list'
 
     def get_queryset(self):
-        return Version.objects.order_by('-release_date')
+        files = qn.qnutils.list_all()
+        for f in files:
+            f['uploadTime'] = datetime.datetime.fromtimestamp(f['putTime'] / 1e7)
+        return files
+
