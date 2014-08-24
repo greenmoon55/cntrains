@@ -31,7 +31,7 @@ def upload(key, data):
         return -1
     print ret
 
-def list_all(bucket_name, rs=None, prefix=None, limit=None):
+def list_all(bucket_name='cntrains', rs=None, prefix=None, limit=None):
     if rs is None:
         rs = qiniu.rsf.Client()
     marker = None
@@ -45,8 +45,10 @@ def list_all(bucket_name, rs=None, prefix=None, limit=None):
         pass
     return files
 
-print list_all('cntrains')
-
-#with open('test.txt', 'r') as fd:
-#    upload('test2', fd.read())
-
+def stat(bucket_name, key):
+    ret, err = qiniu.rs.Client().stat(bucket_name, key)
+    if err is not None:
+        sys.stderr.write('error: %s ' % err)
+        return
+    print ret,
+    return ret
