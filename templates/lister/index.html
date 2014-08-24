@@ -1,31 +1,37 @@
 {% extends "base.html" %}
 
 {% block title %} 盛名时刻表历史版本 {% endblock %}
+{% block css %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}lister/style.css" />
+{% endblock %}
 
 {% block content %}
 {% if version_list %}
-  <table class="table table-striped">
-    <thead>
-      <th>
-        文件名
-      </th>
-      <th>
-        上传时间
-      </th>
-    </thead>
-    <tbody>
-    {% for version in version_list %}
-      <tr>
-        <td>
-          <a href="http://cntrains.qiniu.com/{{version.key}}">
-            {{version.key}}
-          </a>
-        </td>
-        <td>{{version.uploadTime|date:"Y年n月j日"}}</td>
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
+  <div class='content'>
+    <table class="table table-striped">
+      <thead>
+        <th>
+          文件名
+        </th>
+        <th>
+          上传时间
+        </th>
+      </thead>
+      <tbody>
+      {% for version in version_list %}
+        <tr>
+          <td>
+            <a href="http://cntrains.qiniu.com/{{version.key}}">
+              {{version.key}}
+            </a>
+          </td>
+          <td>{{version.uploadTime|date:"Y年n月j日"}}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
 {% else %}
   Not found.
 {% endif %}
