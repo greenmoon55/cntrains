@@ -14,3 +14,4 @@ media/uploads
 tmp
 db.sqlite3
 *.rar
+*qnconfig.py

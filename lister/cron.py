@@ -7,10 +7,10 @@ import requests
 import re
 import datetime
 
+import qn.qnutils
+
 from django.conf import settings
-from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
-from lister.models import Version
 
 @kronos.register('* * * * *')
 def check_update():
@@ -23,20 +23,5 @@ def check_update():
     date = datetime.datetime.strptime(date_str, '%Y%m%d')
 
     r = requests.get(addr)
-    try:
-        record = Version.objects.get(release_date=date)
-    except ObjectDoesNotExist:
-        local_file = settings.BASE_DIR + '/static/' + filename
-        with open(local_file, 'wb') as fd:
-            fd.write(r.content)
-        m = hashlib.md5()
-        m.update(r.content)
-        Version.objects.create(release_date=date, update_date=timezone.now(), link=filename, md5_hash=m.hexdigest())
-
-
-    complaints = [
-        "I forgot to migrate our applications's cron jobs to our new server! Darn!",
-        "I'm out of complaints! Damnit!"
-    ]
-
-    print random.choice(complaints)
+    if not qn.qnutils.stat('cntrains', filename):
+        qn.qnutils.upload(filename, r.content)
