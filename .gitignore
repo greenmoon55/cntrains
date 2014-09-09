@@ -14,4 +14,7 @@ media/uploads
 tmp
 db.sqlite3
 *.rar
+
+#secrets :)
 *qnconfig.py
+cntrains/settings_secret.py
