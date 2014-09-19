@@ -8,7 +8,7 @@ PORT_NUMBER = 8081
 #the browser 
 class myHandler(BaseHTTPRequestHandler):
     #Handler for the GET requests
-    def do_GET(self):
+    def do_POST(self):
         if self.path == "/reload":
             call("./reload.sh")
         self.send_response(200)
