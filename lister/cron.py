@@ -12,7 +12,7 @@ import qn.qnutils
 from django.conf import settings
 from django.utils import timezone
 
-@kronos.register('* * * * *')
+@kronos.register('15 * * * *')
 def check_update():
     r = requests.get('http://www.smskb.com/soft/html/12.html')
     page = r.text
