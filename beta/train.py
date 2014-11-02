@@ -1,4 +1,6 @@
-import marshal;
+import itertools;
+from models.station import Station;
+import pickle;
 import re;
 import requests;
 
@@ -14,16 +16,24 @@ def get(addr, content_type=None):
 def get_station_name():
     try:
         with open('stations.txt', 'r') as f:
-            stations = marshal.load(f)
+            stations = pickle.load(f)
             return stations
     except IOError:
         pass
     raw_data = get('https://kyfw.12306.cn/otn/resources/js/framework/station_name.js')
     match = re.search('\'(.*)\'', raw_data)
     content = match.group(1)
-    stations = content.split('@')
+    raw_stations = content.split('@')
+    stations = []
+    for station in raw_stations:
+        if not station:
+            continue
+        sta_attrs = station.split('|')
+        station_obj = Station(sta_attrs[1], sta_attrs[3], sta_attrs[4])
+        stations.append(station_obj)
+
     with open('stations.txt', 'wb') as f:
-        marshal.dump(stations, f)
+        pickle.dump(stations, f)
     return stations
 
 def query_station(from_station, to_station, date=None):
