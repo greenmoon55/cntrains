@@ -56,7 +56,7 @@ def query_station(from_station, to_station, date=None):
     except KeyError:
         return trains
     for train_data in data:
-        train_obj = Train(train_data['train_no'], train_data['start_station_name'], train_data['to_station_name'], train_data['start_station_telecode'], train_data['to_station_telecode'])
+        train_obj = Train(train_data['train_no'], train_data['start_station_name'], train_data['end_station_name'], train_data['start_station_telecode'], train_data['end_station_telecode'])
         trains.append(train_obj)
     return trains
 
@@ -84,7 +84,7 @@ def get_all_trains(stations):
                 train_dict[train.no] = train
             for key in sorted(train_dict):
                 train = train_dict[key]
-                print "%s %10s %10s" % (train.no, train.from_station, train.to_station)
+                #print "%s %10s %10s" % (train.no, train.from_station, train.to_station)
             with open('trains.txt', 'wb') as f:
                 pickle.dump(train_dict, f)
             

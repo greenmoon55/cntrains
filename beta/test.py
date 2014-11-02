@@ -1,7 +1,9 @@
+import codecs;
 import pickle;
 
-with open('trains.txt', 'r') as f:
+out = codecs.open("out.txt", "w", "utf-8")
+with open('trainsbak.txt', 'r') as f:
     d = pickle.load(f)
     for key in sorted(d):
         train = d[key]
-        print "%s %10s %10s" % (train.no, train.from_station, train.to_station)
+        out.write( "%s %10s %10s\n" % (train.no, train.from_station, train.to_station))
