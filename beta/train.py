@@ -6,10 +6,8 @@ import re;
 import requests;
 import time;
 
-train_no_dict = {}
-
 def get(addr, content_type=None):
-    r = requests.get(addr, verify=False)
+    r = requests.get(addr, timeout=10, verify=False)
     if content_type == 'json':
         return r.json()
     else:
@@ -19,7 +17,7 @@ def get_all_stations():
     try:
         with open('stations.txt', 'r') as f:
             stations = pickle.load(f)
-            return stations[3:7]
+            return stations
     except IOError:
         pass
     raw_data = get('https://kyfw.12306.cn/otn/resources/js/framework/station_name.js')
@@ -39,7 +37,6 @@ def get_all_stations():
     return stations
 
 def query_station(from_station, to_station, date=None):
-    import pdb; pdb.set_trace()
     url = 'https://kyfw.12306.cn/otn/lcxxcx/query?purpose_codes=ADULT&queryDate=2014-11-10&from_station=%s&to_station=%s' % (from_station, to_station)
     raw_data = get(url, 'json')
     trains = []
@@ -66,16 +63,22 @@ def get_trains_between_two_stations(from_station, to_station, date=None):
         train_no_dict[train['station_train_code']] = True
 
 def get_all_trains(stations):
-    #for x, y in itertools.permutations(stations, 2):
+    train_dict = {}
     for station_from in stations:
         for station_to in stations:
             if station_from == station_to:
                 continue
             print station_from.name, station_to.name
-            time.sleep(2)
+            time.sleep(5)
             trains = query_station(station_from.telecode, station_to.telecode)
             for train in trains:
-                print train.from_station, train.to_station, train.no
+                train_dict[train.no] = train
+            for key in sorted(train_dict):
+                train = train_dict[key]
+                print "%s %10s %10s" % (train.no, train.from_station, train.to_station)
+            with open('trains.txt', 'wb') as f:
+                pickle.dump(train_dict, f)
+            
 
 if __name__ == "__main__":
     stations = get_all_stations()
