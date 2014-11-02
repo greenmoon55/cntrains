@@ -7,7 +7,16 @@ import requests;
 import time;
 
 def get(addr, content_type=None):
-    r = requests.get(addr, timeout=10, verify=False)
+    r = None
+    for i in xrange(10):
+        try:
+            r = requests.get(addr, timeout=10, verify=False)
+        except requests.exceptions.RequestException:
+            print 'exception %d' % i
+            time.sleep(2**i)
+            continue
+        break
+
     if content_type == 'json':
         return r.json()
     else:
@@ -69,7 +78,7 @@ def get_all_trains(stations):
             if station_from == station_to:
                 continue
             print station_from.name, station_to.name
-            time.sleep(5)
+            #time.sleep(5)
             trains = query_station(station_from.telecode, station_to.telecode)
             for train in trains:
                 train_dict[train.no] = train
