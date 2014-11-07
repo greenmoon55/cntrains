@@ -6,6 +6,9 @@
   <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}lister/style.css" />
 {% endblock %} 
 {% block content %}
+<div class="bg-info highlight">
+  更新频率为一小时一次，请注意本站<strong>不是</strong>盛名时刻表的官方网站，官网请访问 <a href="http://www.smskb.com/">http://www.smskb.com/</a>
+</div>
 {% if version_list %}
   <div class='content'>
     <table class="table table-striped">
