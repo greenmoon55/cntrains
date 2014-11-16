@@ -2,8 +2,7 @@
 # sure you lock down to a specific version, not to `latest`!
 # See https://github.com/phusion/baseimage-docker/blob/master/Changelog.md for
 # a list of version numbers.
-#FROM phusion/baseimage:0.9.15
-FROM greenmoon55/pip:latest
+FROM phusion/baseimage:0.9.15
 
 # Set correct environment variables.
 ENV HOME /root
@@ -17,16 +16,8 @@ ENV HOME /root
 CMD ["/sbin/my_init"]
 
 # ...put your own build instructions here...
-ADD . /src
-ADD secrets /src
-RUN cd /src; pip install -r requirements.txt
-RUN cd /src; python manage.py installtasks
-
-RUN mkdir /etc/service/django
-ADD docker/startup.sh /etc/service/django/run
-RUN chmod +x /etc/service/django/run
-
-EXPOSE 80
+#ADD docker/sources.list /etc/apt/sources.list
+RUN apt-get update && apt-get install -y python-pip
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

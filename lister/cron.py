@@ -1,5 +1,3 @@
-# app/cron.py
-
 import hashlib
 import kronos
 import random
@@ -7,10 +5,9 @@ import requests
 import re
 import datetime
 
-import qn.qnutils
-
 from django.conf import settings
 from django.utils import timezone
+from qn import qnutils
 
 @kronos.register('15 * * * *')
 def check_update():
@@ -23,5 +20,6 @@ def check_update():
     date = datetime.datetime.strptime(date_str, '%Y%m%d')
 
     r = requests.get(addr)
-    if not qn.qnutils.stat('cntrains', filename):
-        qn.qnutils.upload(filename, r.content)
+    if not qnutils.stat('cntrains', filename):
+        qnutils.upload(filename, r.content)
+    qnutils.list_all(cache=True)

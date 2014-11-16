@@ -1,14 +1,19 @@
+import jsonpickle
 import qiniu.conf
 import qiniu.rs
 import qiniu.rsf
 import qiniu.io
+import os
+import redis
 import sys
 
 import qnconfig
 
+from datetime import datetime
+
 class PutPolicy(object):
     scope = None
-    expires = 3600 
+    expires = 3600
     callbackUrl = None
     callbackBody = None
     returnUrl = None
@@ -31,7 +36,7 @@ def upload(key, data):
         return -1
     print ret
 
-def list_all(bucket_name='cntrains', rs=None, prefix=None, limit=None):
+def list_all(bucket_name='cntrains', rs=None, prefix=None, limit=None, cache=False):
     if rs is None:
         rs = qiniu.rsf.Client()
     marker = None
@@ -43,6 +48,10 @@ def list_all(bucket_name='cntrains', rs=None, prefix=None, limit=None):
         files += ret['items']
     if err is not qiniu.rsf.EOF:
         pass
+    if cache:
+        r = redis.StrictRedis(host=os.environ['REDIS_PORT_6379_TCP_ADDR'], port=os.environ['REDIS_PORT_6379_TCP_PORT'], db=0)
+        r.set('files', jsonpickle.encode(files))
+        r.set('files_updated_at', str(datetime.now()))
     return files
 
 def stat(bucket_name, key):
