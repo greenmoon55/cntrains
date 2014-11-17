@@ -1,25 +1,29 @@
-import hashlib
-import kronos
-import random
+import logging
 import requests
 import re
-import datetime
 
-from django.conf import settings
-from django.utils import timezone
+from apscheduler.schedulers.background import BackgroundScheduler
 from qn import qnutils
 
-@kronos.register('15 * * * *')
+logger = logging.getLogger(__name__)
+
+scheduler = BackgroundScheduler()
+
 def check_update():
+    logger.info('check_update')
     r = requests.get('http://www.smskb.com/soft/html/12.html')
+    logger.info('get page from smskb.com')
     page = r.text
     match = re.search("http://www.smskb.com/down/\S+rar", page)
     addr = match.group(0)
     filename = re.search("down/(\S+rar)", addr).group(1)
-    date_str = re.search("\d+", filename).group(0)
-    date = datetime.datetime.strptime(date_str, '%Y%m%d')
 
     r = requests.get(addr)
     if not qnutils.stat('cntrains', filename):
         qnutils.upload(filename, r.content)
     qnutils.list_all(cache=True)
+    logger.info('check_update finished')
+
+scheduler.start()
+logger.info('job added')
+scheduler.add_job(check_update, 'interval', minutes=60)

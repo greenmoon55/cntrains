@@ -1,4 +1,5 @@
 import jsonpickle
+import logging
 import qiniu.conf
 import qiniu.rs
 import qiniu.rsf
@@ -10,6 +11,8 @@ import sys
 import qnconfig
 
 from datetime import datetime
+
+logger = logging.getLogger(__name__)
 
 class PutPolicy(object):
     scope = None
@@ -37,6 +40,7 @@ def upload(key, data):
     print ret
 
 def list_all(bucket_name='cntrains', rs=None, prefix=None, limit=None, cache=False):
+    logger.info('list_all started')
     if rs is None:
         rs = qiniu.rsf.Client()
     marker = None
@@ -48,10 +52,18 @@ def list_all(bucket_name='cntrains', rs=None, prefix=None, limit=None, cache=Fal
         files += ret['items']
     if err is not qiniu.rsf.EOF:
         pass
+    logger.info('got files from qiniu')
     if cache:
-        r = redis.StrictRedis(host=os.environ['REDIS_PORT_6379_TCP_ADDR'], port=os.environ['REDIS_PORT_6379_TCP_PORT'], db=0)
-        r.set('files', jsonpickle.encode(files))
-        r.set('files_updated_at', str(datetime.now()))
+        logger.info('connect to redis')
+        try:
+            r = redis.StrictRedis(host=os.environ['REDIS_PORT_6379_TCP_ADDR'], port=os.environ['REDIS_PORT_6379_TCP_PORT'], db=0)
+            r.set('files', jsonpickle.encode(files))
+            r.set('files_updated_at', str(datetime.now()))
+            logger.info('update to redis')
+        except Exception, e:
+            logger.info(e)
+    else:
+        logger.info('cache not enabled')
     return files
 
 def stat(bucket_name, key):

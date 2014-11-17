@@ -1,5 +1,5 @@
 #!/bin/bash
-sudo docker pull greenmoon56/private:latest
+sudo docker pull greenmoon55/private:latest
 sudo docker rm -f cntrains-redis
 sudo docker rm -f cntrains
 sudo docker run --dns 8.8.8.8 --name cntrains-redis -d redis:2.8.17

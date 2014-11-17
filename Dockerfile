@@ -20,7 +20,6 @@ CMD ["/sbin/my_init"]
 ADD . /src
 ADD secrets /src
 RUN cd /src; pip install -r requirements.txt
-RUN cd /src; python manage.py installtasks
 
 RUN mkdir /etc/service/django
 ADD docker/startup.sh /etc/service/django/run

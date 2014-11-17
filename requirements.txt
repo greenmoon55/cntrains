@@ -1,8 +1,12 @@
+APScheduler==3.0.1
 Django==1.6.5
 argparse==1.2.1
-django-kronos==0.4
+futures==2.2.0
 jsonpickle==0.8.0
+pytz==2014.9
 qiniu==6.1.7
 redis==2.10.3
 requests==2.3.0
+six==1.8.0
+tzlocal==1.1.2
 wsgiref==0.1.2

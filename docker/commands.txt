@@ -1,2 +1,0 @@
-sudo docker run --name cntrains-redis -d redis:2.8.17
-sudo docker run --name cntrains -d -p 80:80 --dns 8.8.8.8 -d --link cntrains-redis:redis
