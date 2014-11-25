@@ -12,5 +12,3 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "cntrains.settings")
 
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
-
-import lister.cron

@@ -19,8 +19,11 @@ def check_update():
     filename = re.search("down/(\S+rar)", addr).group(1)
 
     r = requests.get(addr)
+    logger.info('qnutils.stat')
     if not qnutils.stat('cntrains', filename):
+        logger.info('qnutils.upload')
         qnutils.upload(filename, r.content)
+        logger.info('uploaded')
     qnutils.list_all(cache=True)
     logger.info('check_update finished')
 
