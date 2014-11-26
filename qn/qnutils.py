@@ -34,10 +34,8 @@ uptoken = policy.token()
 def upload(key, data):
     ret, err = qiniu.io.put(uptoken, key, data)
     if err is not None:
-        sys.stderr.write('error: %s ' % err)
-    else:
-        return -1
-    print ret
+        logger.warn('upload error: %s ' % err)
+
 
 def list_all(bucket_name='cntrains', rs=None, prefix=None, limit=None, cache=False):
     logger.info('list_all started')
