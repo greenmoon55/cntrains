@@ -1,3 +1,4 @@
 import qiniu.conf
 qiniu.conf.ACCESS_KEY = ""
 qiniu.conf.SECRET_KEY = ""
+qiniu.conf.UP_HOST = "up.qiniug.com"

@@ -1,11 +1,13 @@
 import jsonpickle
 import logging
 import qiniu.conf
+import qiniu.resumable_io as rio
 import qiniu.rs
 import qiniu.rsf
 import qiniu.io
 import os
 import redis
+import StringIO
 import sys
 
 import qnconfig
@@ -32,10 +34,13 @@ uptoken = policy.token()
 
 
 def upload(key, data):
-    ret, err = qiniu.io.put(uptoken, key, data)
-    if err is not None:
-        logger.warn('upload error: %s ' % err)
-
+    extra = rio.PutExtra('cntrains')
+    try:
+        ret, err = rio.put(uptoken, key, StringIO.StringIO(data), len(data), extra)
+        if err is not None:
+            logger.warn('upload error: %s ' % err)
+    except Exception as e:
+        logger.warn('exception: %s ' % e)
 
 def list_all(bucket_name='cntrains', rs=None, prefix=None, limit=None, cache=False):
     logger.info('list_all started')
