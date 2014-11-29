@@ -30,3 +30,4 @@ def check_update():
 scheduler.start()
 logger.info('job added')
 scheduler.add_job(check_update, 'interval', minutes=60)
+scheduler.add_job(check_update)

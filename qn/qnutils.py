@@ -30,17 +30,17 @@ class PutPolicy(object):
         self.scope = scope
 
 policy = qiniu.rs.PutPolicy('cntrains')
-uptoken = policy.token()
 
 
 def upload(key, data):
+    uptoken = policy.token()
     extra = rio.PutExtra('cntrains')
     try:
         ret, err = rio.put(uptoken, key, StringIO.StringIO(data), len(data), extra)
         if err is not None:
             logger.warn('upload error: %s ' % err)
-    except Exception as e:
-        logger.warn('exception: %s ' % e)
+    except:
+        logger.exception('')
 
 def list_all(bucket_name='cntrains', rs=None, prefix=None, limit=None, cache=False):
     logger.info('list_all started')
