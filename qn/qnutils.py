@@ -10,8 +10,6 @@ import redis
 import StringIO
 import sys
 
-import qnconfig
-
 from datetime import datetime
 
 logger = logging.getLogger(__name__)
