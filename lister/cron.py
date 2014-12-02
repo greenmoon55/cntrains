@@ -24,7 +24,7 @@ def check_update():
         logger.info('qnutils.upload')
         qnutils.upload(filename, r.content)
         logger.info('uploaded')
-    qnutils.list_all(cache=True)
+    qnutils.list_all()
     logger.info('check_update finished')
 
 scheduler.start()

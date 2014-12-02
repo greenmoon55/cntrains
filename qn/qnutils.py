@@ -42,7 +42,7 @@ def upload(key, data):
     except:
         logger.exception('')
 
-def list_all(bucket_name='cntrains', rs=None, prefix=None, limit=None, cache=False):
+def list_all(bucket_name='cntrains', rs=None, prefix=None, limit=None):
     logger.info('list_all started')
     if rs is None:
         rs = qiniu.rsf.Client()
@@ -56,17 +56,14 @@ def list_all(bucket_name='cntrains', rs=None, prefix=None, limit=None, cache=Fal
     if err is not qiniu.rsf.EOF:
         pass
     logger.info('got files from qiniu')
-    if cache:
-        logger.info('connect to redis')
-        try:
-            r = redis.StrictRedis(host=os.environ['REDIS_PORT_6379_TCP_ADDR'], port=os.environ['REDIS_PORT_6379_TCP_PORT'], db=0)
-            r.set('files', jsonpickle.encode(files))
-            r.set('files_updated_at', str(datetime.now()))
-            logger.info('update to redis')
-        except Exception, e:
-            logger.info(e)
-    else:
-        logger.info('cache not enabled')
+    logger.info('connect to redis')
+    try:
+        r = redis.StrictRedis(host=os.environ['REDIS_PORT_6379_TCP_ADDR'], port=os.environ['REDIS_PORT_6379_TCP_PORT'], db=0)
+        r.set('files', jsonpickle.encode(files))
+        r.set('files_updated_at', str(datetime.now()))
+        logger.info('update to redis')
+    except Exception, e:
+        logger.info(e)
     return files
 
 def stat(bucket_name, key):
