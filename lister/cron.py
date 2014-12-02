@@ -1,6 +1,6 @@
 import logging
-import requests
 import re
+import requests
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from qn import qnutils

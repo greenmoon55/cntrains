@@ -8,11 +8,12 @@ import qiniu.io
 import os
 import redis
 import StringIO
-import sys
 
 from datetime import datetime
 
 logger = logging.getLogger(__name__)
+
+policy = qiniu.rs.PutPolicy('cntrains')
 
 class PutPolicy(object):
     scope = None
@@ -26,9 +27,6 @@ class PutPolicy(object):
 
     def __init__(self, scope):
         self.scope = scope
-
-policy = qiniu.rs.PutPolicy('cntrains')
-
 
 def upload(key, data):
     uptoken = policy.token()
@@ -67,7 +65,6 @@ def list_all(bucket_name='cntrains', rs=None, prefix=None, limit=None):
 def stat(bucket_name, key):
     ret, err = qiniu.rs.Client().stat(bucket_name, key)
     if err is not None:
-        sys.stderr.write('error: %s ' % err)
+        logger.error('error: %s ' % err)
         return
-    print ret,
     return ret
