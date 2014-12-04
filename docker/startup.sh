@@ -1,2 +1,2 @@
 #!/bin/bash
-python /src/manage.py runserver 0.0.0.0:80
+python /src/manage.py runserver 0.0.0.0:80 --insecure
