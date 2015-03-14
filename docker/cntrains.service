@@ -4,11 +4,13 @@ After=docker.service
 Requires=docker.service
 
 [Service]
+Restart=always
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker rm -f cntrains
 ExecStartPre=-/usr/bin/docker rm -f cntrains-redis
 ExecStartPre=/usr/bin/docker run --dns 8.8.8.8 --name cntrains-redis -d redis:2.8.17
-ExecStart=/usr/bin/docker run --dns 8.8.8.8 --name cntrains -p 80:80 --dns 8.8.8.8 -d --link cntrains-redis:redis greenmoon55/private:latest
+ExecStart=/usr/bin/docker run --dns 8.8.8.8 --name cntrains -p 80:80 --dns 8.8.8.8 --link cntrains-redis:redis greenmoon55/private:latest
+ExecStop=/usr/bin/docker stop cntrains
 
 
 [Install]
