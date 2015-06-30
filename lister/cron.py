@@ -1,13 +1,14 @@
 import logging
 import re
 import requests
+import sys
 
-from apscheduler.schedulers.background import BackgroundScheduler
+from oslo_config import cfg
+
 from qn import qnutils
 
 logger = logging.getLogger(__name__)
 
-scheduler = BackgroundScheduler()
 
 def check_update():
     logger.info('check_update')
@@ -27,7 +28,11 @@ def check_update():
     qnutils.list_all()
     logger.info('check_update finished')
 
-scheduler.start()
-logger.info('job added')
-scheduler.add_job(check_update, 'interval', minutes=60)
-scheduler.add_job(check_update)
+
+def main():
+    cfg.CONF(sys.argv[1:])
+    check_update()
+
+
+if __name__ == "__main__":
+    main()
