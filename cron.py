@@ -29,10 +29,10 @@ def check_update():
     logger.info('check_update finished')
 
 
-def main():
-    cfg.CONF(sys.argv[1:])
+def main(argv):
+    cfg.CONF(argv[1:])
     check_update()
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv)
