@@ -15,6 +15,7 @@ logger = logging.getLogger(__name__)
 
 policy = qiniu.rs.PutPolicy('cntrains')
 
+
 class PutPolicy(object):
     scope = None
     expires = 3600
@@ -28,15 +29,18 @@ class PutPolicy(object):
     def __init__(self, scope):
         self.scope = scope
 
+
 def upload(key, data):
     uptoken = policy.token()
     extra = rio.PutExtra('cntrains')
     try:
-        ret, err = rio.put(uptoken, key, StringIO.StringIO(data), len(data), extra)
+        ret, err = rio.put(uptoken, key, StringIO.StringIO(data), len(data),
+                           extra)
         if err is not None:
             logger.warn('upload error: %s ' % err)
     except:
         logger.exception('')
+
 
 def list_all(bucket_name='cntrains', rs=None, prefix=None, limit=None):
     logger.info('list_all started')
@@ -46,7 +50,8 @@ def list_all(bucket_name='cntrains', rs=None, prefix=None, limit=None):
     err = None
     files = []
     while err is None:
-        ret, err = rs.list_prefix(bucket_name, prefix=prefix, limit=limit, marker=marker)
+        ret, err = rs.list_prefix(bucket_name, prefix=prefix, limit=limit,
+                                  marker=marker)
         marker = ret.get('marker', None)
         files += ret['items']
     if err is not qiniu.rsf.EOF:
@@ -54,13 +59,16 @@ def list_all(bucket_name='cntrains', rs=None, prefix=None, limit=None):
     logger.info('got files from qiniu')
     logger.info('connect to redis')
     try:
-        r = redis.StrictRedis(host=os.environ['REDIS_PORT_6379_TCP_ADDR'], port=os.environ['REDIS_PORT_6379_TCP_PORT'], db=0)
+        r = redis.StrictRedis(host=os.environ['REDIS_PORT_6379_TCP_ADDR'],
+                              port=os.environ['REDIS_PORT_6379_TCP_PORT'],
+                              db=0)
         r.set('files', jsonpickle.encode(files))
         r.set('files_updated_at', str(datetime.now()))
         logger.info('update to redis')
     except Exception, e:
         logger.info(e)
     return files
+
 
 def stat(bucket_name, key):
     ret, err = qiniu.rs.Client().stat(bucket_name, key)
