@@ -1,4 +1,5 @@
 import logging
+import os
 import re
 import sys
 
@@ -17,8 +18,10 @@ logger.addHandler(handler)
 logger.setLevel(logging.INFO)
 
 opts = [
-    cfg.StrOpt('access_key', required=True, secret=True),
-    cfg.StrOpt('secret_key', required=True, secret=True),
+    cfg.StrOpt('access_key', required=True, secret=True,
+               default=os.environ['ACCESS_KEY']),
+    cfg.StrOpt('secret_key', required=True, secret=True,
+               default=os.environ['SECRET_KEY']),
 ]
 
 CONF = cfg.CONF
