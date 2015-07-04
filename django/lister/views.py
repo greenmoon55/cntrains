@@ -13,12 +13,16 @@ class IndexView(generic.ListView):
     template_name = 'lister/index.html'
     context_object_name = 'version_list'
 
-    def list_files(self):
-        logger.info('list_files')
-
+    def _get_redis(self):
         r = redis.StrictRedis(host=os.environ['REDIS_PORT_6379_TCP_ADDR'],
                               port=os.environ['REDIS_PORT_6379_TCP_PORT'],
                               db=0)
+        return r
+
+    def _list_files(self):
+        logger.info('list_files')
+
+        r = self.get_redis()
         files = r.get('files')
         if files:
             files = jsonpickle.decode(files)
@@ -30,4 +34,9 @@ class IndexView(generic.ListView):
         return files
 
     def get_queryset(self):
-        return self.list_files()
+        return self._list_files()
+
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+        r = self.get_redis()
+        context

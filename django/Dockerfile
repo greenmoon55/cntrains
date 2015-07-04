@@ -21,7 +21,7 @@ ADD . /src
 RUN cd /src; pip install -r requirements.txt -i https://pypi.mirrors.ustc.edu.cn/simple/
 
 RUN mkdir /etc/service/django
-ADD docker/startup.sh /etc/service/django/run
+ADD startup.sh /etc/service/django/run
 RUN chmod +x /etc/service/django/run
 
 EXPOSE 80
