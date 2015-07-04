@@ -1,0 +1,5 @@
+jsonpickle==0.8.0
+oslo.config==1.13.0
+qiniu==6.1.7
+redis==2.10.3
+requests==2.3.0

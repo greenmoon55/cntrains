@@ -1,15 +1,16 @@
-import jsonpickle
+from datetime import datetime
 import logging
+import os
+import StringIO
+
+import jsonpickle
 import qiniu.conf
 import qiniu.resumable_io as rio
 import qiniu.rs
 import qiniu.rsf
 import qiniu.io
-import os
 import redis
-import StringIO
 
-from datetime import datetime
 
 logger = logging.getLogger('cntrains.qnutils')
 
