@@ -18,8 +18,7 @@ CMD ["/sbin/my_init"]
 
 # ...put your own build instructions here...
 ADD . /src
-ADD secrets /src
-RUN cd /src; pip install -r requirements.txt
+RUN cd /src; pip install -r requirements.txt -i https://pypi.mirrors.ustc.edu.cn/simple/
 
 RUN mkdir /etc/service/django
 ADD docker/startup.sh /etc/service/django/run
