@@ -11,7 +11,7 @@ import StringIO
 
 from datetime import datetime
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('cntrains.qnutils')
 
 policy = qiniu.rs.PutPolicy('cntrains')
 
@@ -66,7 +66,7 @@ def list_all(bucket_name='cntrains', rs=None, prefix=None, limit=None):
         r.set('files_updated_at', str(datetime.now()))
         logger.info('update to redis')
     except Exception, e:
-        logger.info(e)
+        logger.error(e)
     return files
 
 

@@ -1,17 +1,20 @@
 import logging
-import qiniu.conf
 import re
-import requests
 import sys
 
+import qiniu.conf
+import requests
 from oslo_config import cfg
 
-from qn import qnutils
+import qnutils
 
-logger = logging.getLogger(__name__)
-ch = logging.StreamHandler()
-ch.setLevel(logging.INFO)
-logger.addHandler(ch)
+logger = logging.getLogger('cntrains')
+handler = logging.StreamHandler()
+formatter = logging.Formatter(
+                '%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+logger.setLevel(logging.INFO)
 
 opts = [
     cfg.StrOpt('access_key', required=True, secret=True),
@@ -38,6 +41,8 @@ def _check_update():
         logger.info('qnutils.upload')
         qnutils.upload(filename, r.content)
         logger.info('uploaded')
+
+    # Update redis
     qnutils.list_all()
     logger.info('check_update finished')
 
