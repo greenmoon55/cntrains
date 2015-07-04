@@ -19,12 +19,13 @@ class IndexView(generic.ListView):
         r = redis.StrictRedis(host=os.environ['REDIS_PORT_6379_TCP_ADDR'],
                               port=os.environ['REDIS_PORT_6379_TCP_PORT'],
                               db=0)
-        files_redis = r.get('files')
-        files = jsonpickle.decode(files_redis)
+        files = r.get('files')
+        if files:
+            files = jsonpickle.decode(files)
 
-        for f in files:
-            f['uploadTime'] = datetime.datetime.fromtimestamp(
-                f['putTime'] / 1e7)
+            for f in files:
+                f['uploadTime'] = datetime.datetime.fromtimestamp(
+                    f['putTime'] / 1e7)
 
         return files
 
