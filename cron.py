@@ -1,4 +1,5 @@
 import logging
+import qiniu.conf
 import re
 import requests
 import sys
@@ -8,9 +9,21 @@ from oslo_config import cfg
 from qn import qnutils
 
 logger = logging.getLogger(__name__)
+ch = logging.StreamHandler()
+ch.setLevel(logging.INFO)
+logger.addHandler(ch)
+
+opts = [
+    cfg.StrOpt('access_key', required=True, secret=True),
+    cfg.StrOpt('secret_key', required=True, secret=True),
+]
+
+CONF = cfg.CONF
+CONF.register_cli_opts(opts)
+qiniu.conf.UP_HOST = "up.qiniug.com"
 
 
-def check_update():
+def _check_update():
     logger.info('check_update')
     r = requests.get('http://www.smskb.com/soft/html/12.html')
     logger.info('get page from smskb.com')
@@ -31,7 +44,9 @@ def check_update():
 
 def main(argv):
     cfg.CONF(argv[1:])
-    check_update()
+    qiniu.conf.ACCESS_KEY = cfg.CONF.access_key
+    qiniu.conf.SECRET_KEY = cfg.CONF.secret_key
+    _check_update()
 
 
 if __name__ == "__main__":
