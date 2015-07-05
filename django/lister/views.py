@@ -22,7 +22,7 @@ class IndexView(generic.ListView):
     def _list_files(self):
         logger.info('list_files')
 
-        r = self.get_redis()
+        r = self._get_redis()
         files = r.get('files')
         if files:
             files = jsonpickle.decode(files)
@@ -35,8 +35,3 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         return self._list_files()
-
-    def get_context_data(self, **kwargs):
-        context = super(IndexView, self).get_context_data(**kwargs)
-        r = self.get_redis()
-        context
