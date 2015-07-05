@@ -16,7 +16,8 @@ class IndexView(generic.ListView):
     def _get_redis(self):
         r = redis.StrictRedis(host=os.environ['REDIS_PORT_6379_TCP_ADDR'],
                               port=os.environ['REDIS_PORT_6379_TCP_PORT'],
-                              db=0)
+                              db=0,
+                              password=os.environ['REDIS_PASSWORD'])
         return r
 
     def _list_files(self):
