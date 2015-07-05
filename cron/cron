@@ -1,1 +1,1 @@
-* * * * * root env - `cat /root/env.txt` python /src/main.py >> /var/log/cron.log 2>&1
+0 * * * * root env - `cat /root/env.txt` python /src/main.py >> /var/log/cron.log 2>&1
