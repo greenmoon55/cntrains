@@ -62,7 +62,8 @@ def list_all(bucket_name='cntrains', rs=None, prefix=None, limit=None):
     try:
         r = redis.StrictRedis(host=os.environ['REDIS_PORT_6379_TCP_ADDR'],
                               port=os.environ['REDIS_PORT_6379_TCP_PORT'],
-                              db=0)
+                              db=0,
+                              password=os.environ['REDIS_PASSWORD'])
         r.set('files', jsonpickle.encode(files))
         r.set('files_updated_at', str(datetime.now()))
         logger.info('update to redis')
