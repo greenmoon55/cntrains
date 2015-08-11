@@ -1,0 +1,15 @@
+web:
+  build: ./django
+  ports:
+    - "80:80"
+  links:
+    - redis
+cron:
+  build: ./cron
+  links:
+    - redis
+  environment:
+    - ACCESS_KEY=qiniu_access_key
+    - SECRET_KEY=qiniu_secret_key
+redis:
+  image: redis:2.8.17
