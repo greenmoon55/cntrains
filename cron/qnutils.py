@@ -59,16 +59,28 @@ def list_all(bucket_name='cntrains', rs=None, prefix=None, limit=None):
         pass
     logger.info('got files from qiniu')
     logger.info('connect to redis')
+
+    def _get_redis():
+        password = os.environ.get('REDIS_PASSWORD', None)
+        if password:
+            r = redis.StrictRedis(host=os.environ['REDIS_PORT_6379_TCP_ADDR'],
+                                  port=os.environ['REDIS_PORT_6379_TCP_PORT'],
+                                  db=0,
+                                  password=password)
+        else:
+            r = redis.StrictRedis(host=os.environ['REDIS_PORT_6379_TCP_ADDR'],
+                                  port=os.environ['REDIS_PORT_6379_TCP_PORT'],
+                                  db=0)
+        return r
+
     try:
-        r = redis.StrictRedis(host=os.environ['REDIS_PORT_6379_TCP_ADDR'],
-                              port=os.environ['REDIS_PORT_6379_TCP_PORT'],
-                              db=0,
-                              password=os.environ['REDIS_PASSWORD'])
+        r = _get_redis()
         r.set('files', jsonpickle.encode(files))
         r.set('files_updated_at', str(datetime.now()))
         logger.info('update to redis')
     except Exception, e:
         logger.error(e)
+
     return files
 
 

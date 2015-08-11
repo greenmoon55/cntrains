@@ -14,10 +14,16 @@ class IndexView(generic.ListView):
     context_object_name = 'version_list'
 
     def _get_redis(self):
-        r = redis.StrictRedis(host=os.environ['REDIS_PORT_6379_TCP_ADDR'],
-                              port=os.environ['REDIS_PORT_6379_TCP_PORT'],
-                              db=0,
-                              password=os.environ['REDIS_PASSWORD'])
+        password = os.environ.get('REDIS_PASSWORD', None)
+        if password:
+            r = redis.StrictRedis(host=os.environ['REDIS_PORT_6379_TCP_ADDR'],
+                                  port=os.environ['REDIS_PORT_6379_TCP_PORT'],
+                                  db=0,
+                                  password=password)
+        else:
+            r = redis.StrictRedis(host=os.environ['REDIS_PORT_6379_TCP_ADDR'],
+                                  port=os.environ['REDIS_PORT_6379_TCP_PORT'],
+                                  db=0)
         return r
 
     def _list_files(self):
