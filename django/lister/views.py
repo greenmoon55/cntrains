@@ -26,7 +26,7 @@ class IndexView(generic.ListView):
                                   db=0)
         return r
 
-    def _list_files(self):
+    def get_queryset(self):
         logger.info('list_files')
 
         r = self._get_redis()
@@ -37,8 +37,6 @@ class IndexView(generic.ListView):
             for f in files:
                 f['uploadTime'] = datetime.datetime.fromtimestamp(
                     f['putTime'] / 1e7)
+            files = sorted(files, key=lambda f: f['uploadTime'], reverse=True)
 
         return files
-
-    def get_queryset(self):
-        return self._list_files()
